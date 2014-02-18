@@ -1,0 +1,97 @@
+# {{ ansible_managed }}
+
+# What ports, IPs and protocols we listen for
+Port {{ openssh_port }}
+{% if openssh_protocol is number or openssh_protocol is string %}
+Protocol {{ openssh_protocol }}
+{% else %}
+Protocol {{ openssh_protocol|join(',') }}
+{% endif %}
+
+# HostKeys for protocol version 2
+{% if openssh_host_key is defined %}
+{% if openssh_host_key is string %}
+HostKey {{ openssh_host_key }}
+{% else %}
+{% for key in openssh_host_key %}
+HostKey {{ key }}
+{% endfor %}
+{% endif %}
+{% endif %}
+
+# Privilege Separation is turned on for security
+UsePrivilegeSeparation {{ openssh_use_privilege_separation }}
+
+# Lifetime and size of ephemeral version 1 server key
+KeyRegenerationInterval {{ openssh_key_regeneration_interval }}
+ServerKeyBits {{ openssh_server_key_bits }}
+
+# Logging
+SyslogFacility {{ openssh_syslog_facility }}
+LogLevel {{ openssh_log_level }}
+
+# Authentication:
+LoginGraceTime {{ openssh_login_grace_time }}
+StrictModes {{ openssh_strict_modes }}
+PermitEmptyPasswords {{ openssh_permit_empty_passwords }}
+ChallengeResponseAuthentication {{ openssh_challenge_response_auth }}
+
+{% if openssh_permit_root_login %}
+PermitRootLogin yes
+{% else %}
+PermitRootLogin no
+{% endif %}
+{% if openssh_use_publickey_auth %}
+RSAAuthentication yes
+PubkeyAuthentication yes
+AuthorizedKeysFile  %h/.ssh/authorized_keys
+{% else %}
+PubkeyAuthentication no
+{% endif %}
+{% if openssh_use_password_auth %}
+PasswordAuthentication yes
+{% else %}
+PasswordAuthentication no
+{% endif %}
+
+# Patch for vulnerability with AES-GCM
+Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,aes256-cbc
+
+# Extras
+{% if openssh_allow_forwarding %}
+AllowTcpForwarding yes
+X11Forwarding yes
+{% else %}
+AllowTcpForwarding no
+X11Forwarding no
+{% endif %}
+X11DisplayOffset {{ openssh_x11_display_offset }}
+PrintMotd {{ openssh_print_motd }}
+PrintLastLog {{ openssh_print_last_log }}
+TCPKeepAlive {{ openssh_tcp_keep_alive }}
+UseDNS {{ openssh_use_dns }}
+UsePAM {{ openssh_use_pam }}
+
+{% if openssh_enable_banner %}
+Banner /etc/issue.net
+{% else %}
+#Banner /etc/issue.net
+{% endif %}
+
+# Allow client to pass locale environment variables
+AcceptEnv {{ openssh_accept_env|join(' ') }}
+
+Subsystem sftp {{ openssh_subsystem }}
+
+{% if openssh_allow_users %}
+AllowUsers {{ openssh_allow_users|join(' ') }}
+{% endif %}
+
+{% if openssh_allow_groups %}
+AllowGroups {{ openssh_allow_groups|join(' ') }}
+{% endif %}
+
+{% if openssh_password_auth_users is defined %}
+Match User {{ openssh_password_auth_users|join(',') }}
+    PasswordAuthentication yes
+{% endif %}

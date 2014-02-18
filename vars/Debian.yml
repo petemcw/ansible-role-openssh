@@ -1,0 +1,9 @@
+---
+# Defines variables for Debian/Ubuntu
+
+openssh_config_dir: '/etc/ssh'
+openssh_service: 'ssh'
+openssh_packages:
+  - 'openssh-client'
+  - 'openssh-server'
+openssh_subsystem: '/usr/lib/openssh/sftp-server'

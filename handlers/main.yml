@@ -1,0 +1,19 @@
+---
+# Handlers for OpenSSH notifications.
+
+- name: stop ssh
+  service: >
+    name={{ openssh_service }}
+    state=stopped
+
+- name: start ssh
+  service: >
+    name={{ openssh_service }}
+    state=started
+    enabled=yes
+
+- name: restart ssh
+  service: >
+    name={{ openssh_service }}
+    state=restarted
+    enabled=yes

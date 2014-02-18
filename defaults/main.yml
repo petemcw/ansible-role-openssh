@@ -1,0 +1,36 @@
+---
+# The variables file used for OpenSSH playbooks.
+# If not overriden in inventory or as a parameter, this is the value that will be used
+
+openssh_port: 22
+openssh_protocol: 2
+openssh_key_regeneration_interval: 3600
+openssh_server_key_bits: 768
+openssh_use_privilege_separation: 'yes'
+openssh_permit_empty_passwords: 'no'
+openssh_challenge_response_auth: 'no'
+openssh_x11_display_offset: 10
+openssh_print_motd: 'no'
+openssh_print_last_log: 'yes'
+openssh_tcp_keep_alive: 'yes'
+openssh_use_dns: 'no'
+openssh_use_pam: 'yes'
+openssh_log_level: 'INFO'
+openssh_syslog_facility: 'AUTHPRIV'
+openssh_login_grace_time: 120
+openssh_strict_modes: 'yes'
+openssh_permit_root_login: false
+openssh_use_publickey_auth: true
+openssh_use_password_auth: false
+openssh_allow_forwarding: true
+openssh_enable_banner: true
+openssh_allow_users: false
+openssh_allow_groups: false
+openssh_password_auth_users: false
+openssh_host_key:
+  - '/etc/ssh/ssh_host_rsa_key'
+  - '/etc/ssh/ssh_host_dsa_key'
+  - '/etc/ssh/ssh_host_ecdsa_key'
+openssh_accept_env:
+  - 'LANG'
+  - 'LC_*'

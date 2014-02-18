@@ -1,0 +1,50 @@
+---
+# Defines tasks to install and configure OpenSSH
+
+- name: Include the OS specific varibles
+  include_vars: "{{ ansible_os_family }}.yml"
+  tags:
+    - common
+    - ssh
+
+- name: Install packages for Debian derivatives
+  apt: >
+    pkg={{ item }}
+    update_cache=yes
+    state=latest
+  with_items: openssh_packages
+  when: ansible_os_family == 'Debian'
+  tags:
+    - common
+    - ssh
+
+- name: Write OpenSSH configuration template
+  template: >
+    src=sshd_config.j2
+    dest={{ openssh_config_dir }}/sshd_config
+    mode=0644 owner=root group=root
+    backup=yes
+    validate="/usr/sbin/sshd -t -f %s"
+  notify:
+    - restart ssh
+  tags:
+    - common
+    - ssh
+
+- name: Write OpenSSH Banner template
+  template: >
+    src=etc-issue-net.j2
+    dest=/etc/issue.net
+    mode=0644 owner=root group=root
+  tags:
+    - common
+    - ssh
+
+- name: Start OpenSSH on server boot
+  service: >
+    name={{ openssh_service }}
+    state=started
+    enabled=yes
+  tags:
+    - common
+    - ssh
