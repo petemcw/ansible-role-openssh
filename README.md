@@ -1,10 +1,12 @@
 # OpenSSH Role for Ansible
 
-This role configures the portable version of OpenSSH, a free implementation of the Secure Shell protocol.
+This role configures the portable version of OpenSSH, a free implementation of
+the Secure Shell protocol.
 
 ## Requirements
 
-This role requires [Ansible](http://www.ansibleworks.com/) version 1.4 or higher and the Debian/Ubuntu platform.
+This role requires [Ansible](http://www.ansibleworks.com/) version 1.4 or higher
+and the Debian/Ubuntu platform.
 
 ## Role Variables
 
@@ -45,7 +47,7 @@ openssh_use_password_auth: false
     ```yaml
     ---
     # This playbook installs OpenSSH
-    
+
     - name: Apply OpenSSH to all nodes
       hosts: all
       roles:
@@ -57,11 +59,11 @@ openssh_use_password_auth: false
     ```yaml
     ---
     # This playbook installs OpenSSH
-    
+
     - name: Apply OpenSSH to all nodes
       hosts: all
       roles:
-        - { role: openssh, 
+        - { role: openssh,
             openssh_port: 2222,
             openssh_use_publickey_auth: true,
             openssh_use_password_auth: false,
