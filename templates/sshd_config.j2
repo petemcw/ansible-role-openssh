@@ -31,6 +31,7 @@ SyslogFacility {{ openssh_syslog_facility }}
 LogLevel {{ openssh_log_level }}
 
 # Authentication:
+MaxAuthTries {{ openssh_max_auth_tries }}
 LoginGraceTime {{ openssh_login_grace_time }}
 StrictModes {{ openssh_strict_modes }}
 PermitEmptyPasswords {{ openssh_permit_empty_passwords }}
@@ -58,13 +59,8 @@ PasswordAuthentication no
 Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,aes256-cbc
 
 # Extras
-{% if openssh_allow_forwarding %}
-AllowTcpForwarding yes
-X11Forwarding yes
-{% else %}
-AllowTcpForwarding no
-X11Forwarding no
-{% endif %}
+AllowTcpForwarding {{ openssh_allow_forwarding }}
+X11Forwarding {{ openssh_x11_forwarding }}
 X11DisplayOffset {{ openssh_x11_display_offset }}
 PrintMotd {{ openssh_print_motd }}
 PrintLastLog {{ openssh_print_last_log }}
